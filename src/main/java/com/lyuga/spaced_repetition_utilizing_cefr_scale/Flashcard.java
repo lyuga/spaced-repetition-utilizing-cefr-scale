@@ -17,7 +17,7 @@ public class Flashcard {
 		this.setNextDueDate(creationDate.plusDays(1));
 		CambridgeDictionaryParser cdParser = new CambridgeDictionaryParser();
 		LongmanDictionaryParser ldParser = new LongmanDictionaryParser();
-		setCefrLevel(cdParser.fetchTranslation(word));
+		setCefrLevel(cdParser.fetchLowestCefr(word));
 		setTranslation(ldParser.fetchTranslation(word));
 	}
 

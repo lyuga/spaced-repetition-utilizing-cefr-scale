@@ -24,7 +24,7 @@ import nu.validator.htmlparser.dom.HtmlDocumentBuilder;
 public class CambridgeDictionaryParser {
 	private ArrayList<String> cefrList = new ArrayList<String>();
 
-	public String fetchTranslation(String query) {
+	public String fetchLowestCefr(String query) {
 		try {
 			String urlString = "https://dictionary.cambridge.org/dictionary/english/"
 					+ URLEncoder.encode(query, "UTF-8");
