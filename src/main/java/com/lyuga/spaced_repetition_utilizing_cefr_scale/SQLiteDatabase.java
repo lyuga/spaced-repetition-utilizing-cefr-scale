@@ -24,6 +24,7 @@ public class SQLiteDatabase {
 	// データベースに接続し、テーブル user_settings が存在しなければ初期化する
 	public void connect() {
 		try {
+			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:" + fileName + ".db");
 			if (!hasTable("user_settings")) {
 				Scanner scanner = new Scanner(System.in);
@@ -32,6 +33,8 @@ public class SQLiteDatabase {
 				initialize(cefrLevel);
 				scanner.close();
 			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
