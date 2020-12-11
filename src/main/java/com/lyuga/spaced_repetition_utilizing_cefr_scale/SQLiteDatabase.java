@@ -80,6 +80,15 @@ public class SQLiteDatabase {
 		}
 	}
 
+	public void deleteFlashcard(String word) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.execute("DELETE FROM flashcards WHERE word = '" + word + "'");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void updateFlashcard(Flashcard card) {
 		try {
 			PreparedStatement ps = conn.prepareStatement("UPDATE flashcards SET " + "repetitions = ?,"

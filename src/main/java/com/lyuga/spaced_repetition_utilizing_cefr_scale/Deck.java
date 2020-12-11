@@ -27,6 +27,24 @@ public class Deck {
 		System.out.println("The card has been added to the deck.");
 	}
 
+	public void deleteCard() {
+		try {
+			SQLiteDatabase db = new SQLiteDatabase(deckName);
+			db.connect();
+			System.out.println("Enter a word to delete: ");
+			String word = sc.nextLine();
+			if (db.wordExists(word)) {
+				db.deleteFlashcard(word);
+				System.out.println("The card has been deleted from the deck.");
+			} else {
+				System.out.println("There's no card containing a specified word.");
+			}
+			db.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void startReview() {
 		try {
 			SQLiteDatabase db = new SQLiteDatabase(deckName);
@@ -39,10 +57,10 @@ public class Deck {
 				Flashcard card = flashcards.get(i);
 				System.out.println("\nReview: " + (i + 1) + " of " + size);
 				System.out.println("Front Side:\n" + card.getWord());
-				System.out.println("\nPress enter to continue.");
+				System.out.print("Press enter to continue.");
 				System.in.read();
 				sc.nextLine();
-				System.out.println("Back Side:\n" + card.getTranslation());
+				System.out.print("Back Side:\n" + card.getTranslation());
 
 				int quality;
 				do {
@@ -55,7 +73,7 @@ public class Deck {
 			}
 
 			db.close();
-			System.out.println("\nThere's no cards to review today.\n");
+			System.out.println("\nThere's no card to review today.\n");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -11,11 +11,12 @@ public class App {
 			do {
 				System.out.println("[1] Start reviewing cards");
 				System.out.println("[2] Add a new card");
-				System.out.println("[3] Quit");
-				System.out.print("Enter option [1-3]: ");
+				System.out.println("[3] Delete a card");
+				System.out.println("[4] Quit");
+				System.out.print("Enter option [1-4]: ");
 				Scanner sc = new Scanner(System.in);
 				selection = Integer.parseInt(sc.nextLine());
-			} while (selection < 0 || selection > 3);
+			} while (selection < 0 || selection > 4);
 
 			switch (selection) {
 			case 1:
@@ -25,6 +26,9 @@ public class App {
 				deck.addCard();
 				break;
 			case 3:
+				deck.deleteCard();
+				break;
+			case 4:
 				break loop;
 			}
 		}
