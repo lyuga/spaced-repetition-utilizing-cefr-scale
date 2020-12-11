@@ -1,7 +1,6 @@
 package com.lyuga.spaced_repetition_utilizing_cefr_scale;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -50,15 +49,19 @@ public class CambridgeDictionaryParser {
 			NodeList cefrNodeList = (NodeList) xPath.evaluate("//*[starts-with(@class, 'epp-xref dxref')]", document,
 					XPathConstants.NODESET);
 
+			int cefrNodeListLength = cefrNodeList.getLength();
+			// CEFRレベルが定義されていない場合、"undefined"と返却する
+			if (cefrNodeListLength == 0) {
+				return "undefined";
+			}
+
 			// Nodeごとに文字列を取得し、可変長配列であるcefrListへ追加
-			for (int i = 0; i < cefrNodeList.getLength(); i++) {
+			for (int i = 0; i < cefrNodeListLength; i++) {
 				Node cefrNode = cefrNodeList.item(i);
 				cefrList.add(cefrNode.getTextContent());
 			}
 
 			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
