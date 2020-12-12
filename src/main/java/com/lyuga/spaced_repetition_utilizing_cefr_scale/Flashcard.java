@@ -2,6 +2,9 @@ package com.lyuga.spaced_repetition_utilizing_cefr_scale;
 
 import java.time.LocalDateTime;
 
+import com.lyuga.spaced_repetition_utilizing_cefr_scale.parser.CambridgeDictionaryParser;
+import com.lyuga.spaced_repetition_utilizing_cefr_scale.parser.LongmanDictionaryParser;
+
 public class Flashcard {
 	private int id;
 	private String word;

@@ -1,4 +1,4 @@
-package com.lyuga.spaced_repetition_utilizing_cefr_scale;
+package com.lyuga.spaced_repetition_utilizing_cefr_scale.parser;
 
 import java.net.URL;
 import java.net.URLEncoder;
