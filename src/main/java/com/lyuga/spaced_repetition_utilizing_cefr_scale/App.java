@@ -5,7 +5,9 @@ import java.util.Scanner;
 public class App {
 	public static void main(String[] args) {
 		Deck deck = new Deck("english_vocabulary");
+		deck.initializeIfNeeded();
 
+		Scanner sc = new Scanner(System.in);
 		loop: while (true) {
 			int selection;
 			do {
@@ -14,7 +16,6 @@ public class App {
 				System.out.println("[3] Delete a card");
 				System.out.println("[4] Quit");
 				System.out.print("Enter option [1-4]: ");
-				Scanner sc = new Scanner(System.in);
 				selection = Integer.parseInt(sc.nextLine());
 			} while (selection < 0 || selection > 4);
 

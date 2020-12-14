@@ -12,6 +12,22 @@ public class Deck {
 		this.deckName = deckName;
 	}
 
+	// データベースにテーブル "user_settings" が存在しなければ初期化する
+	public void initializeIfNeeded() {
+		try {
+			SQLiteDatabase db = new SQLiteDatabase(deckName);
+			db.connect();
+			if (!db.hasTable("user_settings")) {
+				System.out.println("Enter your CEFR Level");
+				String cefrLevel = sc.nextLine();
+				db.initialize(cefrLevel);
+			}
+			db.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void addCard() {
 		try {
 			SQLiteDatabase db = new SQLiteDatabase(deckName);

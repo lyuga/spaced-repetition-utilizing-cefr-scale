@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class SQLiteDatabase {
 	private String fileName;
@@ -21,18 +20,10 @@ public class SQLiteDatabase {
 		this.fileName = fileName;
 	}
 
-	// データベースに接続し、テーブル user_settings が存在しなければ初期化する
 	public void connect() {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:" + fileName + ".db");
-			if (!hasTable("user_settings")) {
-				Scanner scanner = new Scanner(System.in);
-				System.out.println("Enter your CEFR Level");
-				String cefrLevel = scanner.nextLine();
-				initialize(cefrLevel);
-				scanner.close();
-			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -46,6 +37,35 @@ public class SQLiteDatabase {
 				conn.close();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public boolean hasTable(String tableName) {
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt
+					.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "'");
+			if (rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public void initialize(String cefrLevel) throws SQLException {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.execute("CREATE TABLE user_settings(cefrLevel TEXT);");
+			stmt.execute("CREATE TABLE flashcards(" + "id INTEGER PRIMARY KEY," + "word TEXT," + "cefrLevel TEXT,"
+					+ "translation TEXT," + "repetitions INTEGER," + "easinessFactor REAL," + "interval INTEGER,"
+					+ "nextDueDate INTEGER)");
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO user_settings VALUES(?);");
+			ps.setString(1, cefrLevel.toUpperCase());
+			ps.executeUpdate();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -132,35 +152,6 @@ public class SQLiteDatabase {
 			e.printStackTrace();
 		}
 		return flashcards;
-	}
-
-	private boolean hasTable(String tableName) {
-		try {
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "'");
-			if (rs.next()) {
-				return true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	private void initialize(String cefrLevel) throws SQLException {
-		try {
-			Statement stmt = conn.createStatement();
-			stmt.execute("CREATE TABLE user_settings(cefrLevel TEXT);");
-			stmt.execute("CREATE TABLE flashcards(" + "id INTEGER PRIMARY KEY," + "word TEXT," + "cefrLevel TEXT,"
-					+ "translation TEXT," + "repetitions INTEGER," + "easinessFactor REAL," + "interval INTEGER,"
-					+ "nextDueDate INTEGER)");
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO user_settings VALUES(?);");
-			ps.setString(1, cefrLevel.toUpperCase());
-			ps.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private Flashcard constructFlashcardFromResultset(ResultSet rs) throws SQLException {
