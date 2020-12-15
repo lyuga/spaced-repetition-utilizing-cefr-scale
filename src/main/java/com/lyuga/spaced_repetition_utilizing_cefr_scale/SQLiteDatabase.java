@@ -70,6 +70,20 @@ public class SQLiteDatabase {
 		}
 	}
 
+	public String retrieveUserCefrLevel() {
+		String userCefrLevel = null;
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM user_settings");
+			if (rs != null && rs.next()) {
+				userCefrLevel = rs.getString("cefrLevel");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userCefrLevel;
+	}
+
 	public boolean wordExists(String word) {
 		Statement stmt;
 		try {
@@ -128,7 +142,7 @@ public class SQLiteDatabase {
 		Flashcard card = null;
 		try {
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT 1 FROM flashcards WHERE word='" + word + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM flashcards WHERE word='" + word + "'");
 			if (rs != null && rs.next()) {
 				card = constructFlashcardFromResultset(rs);
 			}

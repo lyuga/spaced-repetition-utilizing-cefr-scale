@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Deck {
+	public static String userCefrLevel;
 	private static Scanner sc = new Scanner(System.in);
 	private String deckName;
 
@@ -22,6 +23,7 @@ public class Deck {
 				String cefrLevel = sc.nextLine();
 				db.initialize(cefrLevel);
 			}
+			userCefrLevel = db.retrieveUserCefrLevel();
 			db.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,7 +86,7 @@ public class Deck {
 					quality = Integer.parseInt(sc.nextLine());
 				} while (quality < 0 || quality > 5);
 
-				new SpacedRepetition(card, quality).calculate();
+				new SpacedRepetition(card, quality, userCefrLevel).calculate();
 				db.updateFlashcard(card);
 			}
 

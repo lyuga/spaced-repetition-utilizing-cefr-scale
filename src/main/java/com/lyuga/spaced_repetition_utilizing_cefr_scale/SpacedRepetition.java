@@ -5,25 +5,45 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class SpacedRepetition {
+	private static final float WEIGHT_COEFFICIENT = 0.8f;
 	private static final float EASINESS_FLOOR = 1.3f;
 	private static final int QUALITY_THRESHOLD = 3;
 	private Flashcard card;
 	private int quality;
+	private String userCefrLevel;
 	private float updatedEasiness;
 	private int updatedRepetitions;
 	private int updatedInterval;
 
-	public SpacedRepetition(Flashcard card, int quality) {
+	public SpacedRepetition(Flashcard card, int quality, String userCefrLevel) {
 		this.card = card;
 		this.quality = quality;
+		this.userCefrLevel = userCefrLevel;
 	}
 
 	// Spaced repetitionに必要な計算をすべて行う
 	public void calculate() {
+		if (isGreaterThanOrEqualTo(card.getCefrLevel())) {
+			quality = calculateWeightedQuality();
+		}
 		card.setEasinessFactor(calculateEasinessFactor());
 		card.setRepetitions(calculateRepetitions());
 		card.setInterval(calculateInterval());
 		card.setNextDueDate(calculateNextDueDate());
+	}
+
+	// ユーザのCEFRレベルが単語のレベル以上であれば、真を返却
+	private boolean isGreaterThanOrEqualTo(String cefrLevel) {
+		int result = userCefrLevel.compareToIgnoreCase(cefrLevel);
+		if (result >= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private int calculateWeightedQuality() {
+		return Math.round(quality * WEIGHT_COEFFICIENT);
 	}
 
 	private float calculateEasinessFactor() {
