@@ -19,7 +19,7 @@ public class Deck {
 			SQLiteDatabase db = new SQLiteDatabase(deckName);
 			db.connect();
 			if (!db.hasTable("user_settings")) {
-				System.out.println("Enter your CEFR Level");
+				System.out.print("CEFR Levelを入力: ");
 				String cefrLevel = sc.nextLine();
 				db.initialize(cefrLevel);
 			}
@@ -34,7 +34,7 @@ public class Deck {
 		try {
 			SQLiteDatabase db = new SQLiteDatabase(deckName);
 			db.connect();
-			System.out.print("Enter a word: ");
+			System.out.print("追加する単語を入力: ");
 			String word = sc.nextLine();
 			Flashcard card = new Flashcard(word, LocalDateTime.now());
 			db.registerFlashcard(card);
@@ -42,20 +42,20 @@ public class Deck {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("The card has been added to the deck.");
+		System.out.println("カードがデッキに追加されました。");
 	}
 
 	public void deleteCard() {
 		try {
 			SQLiteDatabase db = new SQLiteDatabase(deckName);
 			db.connect();
-			System.out.println("Enter a word to delete: ");
+			System.out.print("削除する単語を入力: ");
 			String word = sc.nextLine();
 			if (db.wordExists(word)) {
 				db.deleteFlashcard(word);
-				System.out.println("The card has been deleted from the deck.");
+				System.out.println("カードがデッキから削除されました。");
 			} else {
-				System.out.println("There's no card containing a specified word.");
+				System.out.println("指定された単語を含むカードが見つかりません。");
 			}
 			db.close();
 		} catch (Exception e) {
@@ -73,16 +73,16 @@ public class Deck {
 
 			for (int i = 0; i < size; i++) {
 				Flashcard card = flashcards.get(i);
-				System.out.println("\nReview: " + (i + 1) + " of " + size);
-				System.out.println("Front Side:\n" + card.getWord());
-				System.out.print("Press enter to continue.");
+				System.out.println("\n復習: " + (i + 1) + " / " + size);
+				System.out.println("[表面]\n" + card.getWord());
+				System.out.print("エンターで裏面を表示");
 				System.in.read();
 				sc.nextLine();
-				System.out.print("Back Side:\n" + card.getTranslation());
+				System.out.print("[裏面]\n" + card.getTranslation());
 
 				int quality;
 				do {
-					System.out.print("Grade the repetition quality [0-5]: ");
+					System.out.print("Repetition quality を [0-5] で評価: ");
 					quality = Integer.parseInt(sc.nextLine());
 				} while (quality < 0 || quality > 5);
 
@@ -91,7 +91,7 @@ public class Deck {
 			}
 
 			db.close();
-			System.out.println("\nThere's no card to review today.\n");
+			System.out.println("\n本日復習するカードはありません。\n");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

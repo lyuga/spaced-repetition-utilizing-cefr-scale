@@ -11,11 +11,11 @@ public class App {
 		loop: while (true) {
 			int selection;
 			do {
-				System.out.println("[1] Start reviewing cards");
-				System.out.println("[2] Add a new card");
-				System.out.println("[3] Delete a card");
-				System.out.println("[4] Quit");
-				System.out.print("Enter option [1-4]: ");
+				System.out.println("[1] 復習を開始");
+				System.out.println("[2] 新しいカードを追加");
+				System.out.println("[3] カードを削除");
+				System.out.println("[4] 終了");
+				System.out.print("オプション [1-4] を選択: ");
 				selection = Integer.parseInt(sc.nextLine());
 			} while (selection < 0 || selection > 4);
 
